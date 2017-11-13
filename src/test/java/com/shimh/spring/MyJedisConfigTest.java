@@ -8,9 +8,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.shimh.base.redis.JedisTemplate;
 import com.shimh.spring.config.MyJedisConfig;
-import com.shimh.spring.config.RootConfig;
 
-import junit.framework.Assert;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = MyJedisConfig.class)

@@ -19,6 +19,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
 
@@ -73,10 +74,18 @@ public class SpringCacheConfig {
 		return concurrentMapCacheManager;
 	}
 	
-/*	@Bean
-	public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
-		return RedisCacheManager.create(connectionFactory);
-	}*/
+	
+	@Bean
+	public RedisCacheManager redisCacheManager() {
+		
+		JedisConnectionFactory factory = null;
+		RedisTemplate template = null;
+		
+		RedisCacheManager manager = new RedisCacheManager(template);
+		
+		
+		return manager;
+	}
 
 
 }

@@ -3,16 +3,33 @@ package com.shimh.spring.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+import com.shimh.spring.model.User;
+
 import redis.clients.jedis.JedisPoolConfig;
 
 @Configuration
-public class SpringDataJedisConfig {
+public class SpringDataRedisConfig {
 	
+	@Bean
+	public RedisTemplate<String,User> redisTemplate(JedisConnectionFactory jedisConnectionFactory){
+		RedisTemplate<String,User> redisTemplate = new RedisTemplate<String,User>();
+		redisTemplate.setConnectionFactory(jedisConnectionFactory);
+		
+		redisTemplate.setKeySerializer(new StringRedisSerializer());
+		redisTemplate.setValueSerializer(new JdkSerializationRedisSerializer());
+		
+		return redisTemplate;
+	}
 	
+	/*
+	 * key和value都是string类型时
+	 */
+	@Bean
 	public StringRedisTemplate stringRedisTemplate(JedisConnectionFactory jedisConnectionFactory){
 		StringRedisTemplate stringRedisTemplate = new StringRedisTemplate();
 		stringRedisTemplate.setConnectionFactory(jedisConnectionFactory);
@@ -25,12 +42,12 @@ public class SpringDataJedisConfig {
 	
 	
 	
-	
+	@Bean
 	public JedisConnectionFactory JedisConnectionFactory(JedisPoolConfig jedisPoolConfig){
 		
-		JedisConnectionFactory factory = new JedisConnectionFactory(jedisPoolConfig);
-		
-		factory.setHostName("localhost");
+		JedisConnectionFactory factory = new JedisConnectionFactory();
+		factory.setPort(6379);
+		//factory.setHostName("localhost");
 		
 		return factory;
 	}
